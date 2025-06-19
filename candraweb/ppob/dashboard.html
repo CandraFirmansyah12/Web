@@ -3,70 +3,63 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Dashboard - CandraTopup</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <title>Dashboard - PPOB Candra</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet" />
   <style>
     body {
-      background-color: #f0f2f5;
-      font-family: 'Segoe UI', sans-serif;
+      background-color: #f8f9fa;
     }
-    .dashboard-container {
-      max-width: 600px;
-      margin: 60px auto;
-      background: white;
-      padding: 30px;
-      border-radius: 10px;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+    .navbar {
+      background-color: #ffffff;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     }
-    .logout-btn {
-      float: right;
+    .category-card {
+      transition: transform 0.2s;
+    }
+    .category-card:hover {
+      transform: scale(1.03);
     }
   </style>
 </head>
 <body>
 
-  <div class="dashboard-container text-center">
-    <h3>Selamat datang, <span id="userName">Pengguna</span>!</h3>
-    <p class="text-muted">Ini adalah halaman dashboard akun kamu.</p>
-    <button id="logoutBtn" class="btn btn-danger mt-3">Logout</button>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-light">
+    <div class="container">
+      <a class="navbar-brand fw-bold" href="index.html"><i class="bi bi-arrow-left"></i> Kembali</a>
+      <span class="navbar-text ms-auto">Dashboard PPOB</span>
+    </div>
+  </nav>
+
+  <div class="container py-5">
+    <h3 class="mb-4">Kategori Produk</h3>
+    <div class="row">
+
+      <!-- Token Listrik -->
+      <div class="col-md-4">
+        <div class="card category-card">
+          <div class="card-body">
+            <h5 class="card-title">Token Listrik</h5>
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item d-flex justify-content-between">
+                PLN 10.000 <span class="text-success">Rp11.000</span>
+              </li>
+              <li class="list-group-item d-flex justify-content-between">
+                PLN 20.000 <span class="text-success">Rp21.000</span>
+              </li>
+              <li class="list-group-item d-flex justify-content-between">
+                PLN 50.000 <span class="text-success">Rp51.500</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tambahkan kategori produk lain di sini -->
+
+    </div>
   </div>
-
-  <!-- Firebase SDK -->
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-
-    const firebaseConfig = {
-      apiKey: "AIzaSyDNL8q-c4RT5VuYQ6-TmwggxjqMPpEhFvs",
-      authDomain: "easepay-14d8f.firebaseapp.com",
-      projectId: "easepay-14d8f",
-      appId: "1:302786537772:web:fe6b4b9ae6b75c66a0a489"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-
-    const userNameSpan = document.getElementById("userName");
-    const logoutBtn = document.getElementById("logoutBtn");
-
-    // Cek status login
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        const displayName = user.displayName || localStorage.getItem("username") || "Pengguna";
-        userNameSpan.textContent = displayName;
-      } else {
-        window.location.href = "login.html";
-      }
-    });
-
-    // Logout
-    logoutBtn.addEventListener("click", () => {
-      signOut(auth).then(() => {
-        localStorage.removeItem("username");
-        window.location.href = "login.html";
-      });
-    });
-  </script>
 
 </body>
 </html>
