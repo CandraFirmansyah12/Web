@@ -31,10 +31,11 @@
 <div class="container">
   <div class="form-box">
     <h4 class="text-center mb-4">Top Up Free Fire</h4>
+    
     <form id="topup-form" enctype="multipart/form-data">
       <div class="mb-3">
-        <label for="nama" class="form-label">Nama Player</label>
-        <input type="text" class="form-control" id="nama" name="nama" required>
+        <label for="nama" class="form-label">Nickname</label>
+        <input type="text" class="form-control" id="nama" name="name" required>
       </div>
       <div class="mb-3">
         <label for="id" class="form-label">ID Free Fire</label>
@@ -68,7 +69,7 @@ document.getElementById('topup-form').addEventListener('submit', function (e) {
 
   fetch('https://script.google.com/macros/s/AKfycbx8HIGiepLH66aFkEW1NWs6i5i-HG1xdWI7A0LtadpGFZfHmmhlUXcysVXcUfA-7lbj/exec', { // ganti URL ini
     method: 'POST',
-    body: data
+    body: formData
   })
   .then(res => res.text())
   .then(txt => {
