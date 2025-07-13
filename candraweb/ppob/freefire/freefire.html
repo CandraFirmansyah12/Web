@@ -20,6 +20,51 @@
   </style>
 </head>
 <body>
+   <style>
+    body {
+      background: linear-gradient(135deg, #f9f9f9, #e2e8f0);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    .form-box {
+      background-color: #fff;
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 500px;
+    }
+
+    .form-title {
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: 25px;
+      color: #333;
+    }
+
+    .form-control, .form-select {
+      border-radius: 12px;
+    }
+
+    .btn-submit {
+      border-radius: 12px;
+      font-weight: 600;
+      padding: 12px;
+    }
+
+    .form-label {
+      font-weight: 500;
+      margin-bottom: 6px;
+    }
+
+    .success-alert {
+      display: none;
+    }
+  </style>
   <nav class="navbar navbar-light bg-light shadow-sm">
     <div class="container-fluid">
       <span class="navbar-brand fw-bold text-uppercase">Top Up Free Fire</span>
@@ -31,22 +76,40 @@
       <h4 class="text-center mb-4">Form Pemesanan Diamond FF</h4>
 
       <form id="topup-form">
-  <input type="text" name="nama" placeholder="Nickname" required>
-  <input type="text" name="id" placeholder="ID FF" required>
-  <select name="nominal" required>
-    <option value="">Pilih Diamond</option>
-    <option value="70">70 Diamond</option>
-    <option value="140">140 Diamond</option>
-  </select>
-  <input type="file" name="bukti" id="bukti" accept="image/*" required>
-  <button type="submit">Kirim</button>
-</form>
-
-      <div id="success-msg" class="alert alert-success mt-3 d-none">
-        ✅ Pesanan berhasil dikirim! Kami akan segera proses ya!
+      <div class="mb-3">
+        <label class="form-label">Nickname</label>
+        <input type="text" name="nama" class="form-control" placeholder="Masukkan nickname kamu" required />
       </div>
+
+      <div class="mb-3">
+        <label class="form-label">ID Free Fire</label>
+        <input type="text" name="id" class="form-control" placeholder="Masukkan ID FF kamu" required />
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Nominal Diamond</label>
+        <select name="nominal" class="form-select" required>
+          <option value="">-- Pilih Diamond --</option>
+          <option value="70">70 Diamond - Rp10.000</option>
+          <option value="140">140 Diamond - Rp20.000</option>
+          <option value="355">355 Diamond - Rp50.000</option>
+          <option value="720">720 Diamond - Rp100.000</option>
+        </select>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Upload Bukti Transfer</label>
+        <input type="file" name="bukti" id="bukti" class="form-control" accept="image/*" required />
+      </div>
+
+      <button type="submit" class="btn btn-success btn-submit w-100">Kirim Pesanan</button>
+    </form>
+
+    <div class="alert alert-success mt-3 success-alert" id="success-msg">
+      ✅ Pesanan berhasil dikirim ke Telegram!
     </div>
   </div>
+</div>
 
   <script>
     document.getElementById("topup-form").addEventListener("submit", async function (e) {
