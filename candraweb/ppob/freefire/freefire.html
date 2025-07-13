@@ -49,7 +49,7 @@
   </div>
 
   <script>
-    document.getElementById("topup-form").addEventListener("submit", function(e) {
+    document.getElementById("topup-form").addEventListener("submit", async function (e) {
   e.preventDefault();
 
   const form = e.target;
@@ -58,37 +58,39 @@
   const nominal = form.nominal.value;
   const file = form.bukti.files[0];
 
-  const reader = new FileReader();
-  reader.onloadend = function() {
-    const base64 = reader.result.split(',')[1]; // hapus prefix data:image/...
-    const token = "7831918844:AAHFLYmt__zF5sQErU5Zx6sux6BaPxUAbAw";
-    const chat_id = "6096477082";
+  const token = "7831918844:AAHFLYmt__zF5sQErU5Zx6sux6BaPxUAbAw";
+  const chat_id = "6096477082";
 
-    const message = `📥 *PESANAN FREE FIRE*\n👤 *${nama}*\n🆔 ${idff}\n💎 ${nominal} Diamond`;
-    
-    // Kirim teks dulu
-    fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
-      method: "POST",
-      headers: {"Content-Type": "application/json"},
-      body: JSON.stringify({ chat_id, text: message, parse_mode: "Markdown" })
-    }).then(() => {
-      // Kirim foto setelah pesan
-      fetch(`https://api.telegram.org/bot${token}/sendPhoto`, {
-        method: "POST",
-        body: new URLSearchParams({
-          chat_id,
-          caption: `🖼️ Bukti transfer atas nama ${nama}`,
-          photo: `data:image/jpeg;base64,${base64}`
-        })
-      });
-    });
+  const text = `📥 PESANAN FREE FIRE\n👤 ${nama}\n🆔 ${idff}\n💎 ${nominal} Diamond`;
 
-    alert("✅ Pesanan dikirim ke Telegram!");
-    form.reset();
-  };
+  // 1. Kirim pesan teks
+  await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ chat_id, text })
+  });
 
-  reader.readAsDataURL(file);
+  // 2. Kirim foto sebagai file
+  const formData = new FormData();
+  formData.append("chat_id", chat_id);
+  formData.append("caption", `🖼️ Bukti transfer dari ${nama}`);
+  formData.append("photo", file);
+
+  fetch(`https://api.telegram.org/bot${token}/sendPhoto`, {
+    method: "POST",
+    body: formData
+  })
+  .then(res => res.json())
+  .then(res => {
+    if (res.ok) {
+      alert("✅ Pesanan dan bukti terkirim!");
+      form.reset();
+    } else {
+      alert("❌ Gagal kirim gambar: " + JSON.stringify(res));
+    }
+  });
 });
+
   </script>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
