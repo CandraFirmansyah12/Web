@@ -67,35 +67,42 @@
   </div>
 
   <script>
-    document.getElementById('topup-form').addEventListener('submit', async function (e) {
-  e.preventDefault();
-  const form = e.target;
+    document.getElementById('topup-form').addEventListener('submit', function (e) {
+      e.preventDefault();
+      const form = e.target;
+      const reader = new FileReader();
+      const file = document.getElementById('bukti').files[0];
 
-  const buktiFile = document.getElementById("bukti").files[0];
-  const reader = new FileReader();
+      reader.onloadend = async function () {
+        const data = new FormData();
+        data.append("name", form.nama.value);
+        data.append("id", form.id.value);
+        data.append("nominal", form.nominal.value);
+        data.append("bukti", reader.result);
 
-  reader.onloadend = async function () {
-    const data = new FormData();
-    data.append("name", form.nama.value);
-    data.append("id", form.id.value);
-    data.append("nominal", form.nominal.value);
-    data.append("bukti", reader.result); // base64 string
+        try {
+          const res = await fetch("https://script.google.com/macros/s/AKfycbxHjhN12emSa3lQdFOuqHazn3rzuH0TBSGgco6x1hUd_Z3nCviLuHiQbq72RNMnDpER_Q/exec", {
+            method: 'POST',
+            body: data
+          });
+          const txt = await res.text();
+          if (txt.toLowerCase().includes("sukses")) {
+            document.getElementById('success-msg').classList.remove('d-none');
+            form.reset();
+          } else {
+            alert('❌ Gagal: ' + txt);
+          }
+        } catch (err) {
+          alert('❌ Error kirim: ' + err.message);
+        }
+      };
 
-    try {
-      const res = await fetch("https://script.google.com/macros/s/AKfycbxHjhN12emSa3lQdFOuqHazn3rzuH0TBSGgco6x1hUd_Z3nCviLuHiQbq72RNMnDpER_Q/exec", {
-        method: "POST",
-        body: data,
-      });
-      const txt = await res.text();
-      alert(txt.includes("SUKSES") ? "✅ Pesanan dikirim!" : "❌ Gagal: " + txt);
-    } catch (err) {
-      alert("❌ ERROR: " + err.message);
-    }
-  };
-
-  reader.readAsDataURL(buktiFile);
-});
-
+      if (file) {
+        reader.readAsDataURL(file);
+      } else {
+        alert("Mohon upload bukti transfer terlebih dahulu.");
+      }
+    });
   </script>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
